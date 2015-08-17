@@ -1,0 +1,95 @@
+<script type="text/javascript">
+var recordFields = [
+	"id",
+	"time",
+	"kv",
+	"bv",
+	"poo",
+	"pee",
+	"temp",
+	"weight",
+	"notes",
+	"kolikin",
+	"vitaminD",
+	"vitaminK"
+];
+
+fieldEls = [];
+
+function loadRecord(rowEl, fields)
+{
+	var form = document.querySelector("form");
+	rowEl.addEventListener("click", function (evt) {
+		// target is the cell clicked
+		clearForm();
+		var cells = evt.target.parentNode.querySelectorAll("td");
+		for (var j=0; j<recordFields.length; j++) {
+			var cell = cells.item(j);
+			if (fields[j].type == "checkbox") {
+				if (cell.textContent == "1") {
+					fields[j].checked = true;
+				} else {
+					fields[j].checked = false;
+				}
+			} else {
+				fields[j].value = cell.textContent;
+			}
+		}
+	});
+}
+
+function clearForm()
+{
+	for (var i=0; i<fieldEls.length; i++) {
+		if (fieldEls[i].type == "checkbox") {
+			console.log(fieldEls[i]);
+			fieldEls[i].checked = false;
+		} else {
+			fieldEls[i].value = "";
+		}
+	}
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+	var form = document.querySelector("form");
+	// cache list of input elements, ordered as in the name array
+	for (var i=0; i<recordFields.length; i++) {
+		fieldEls.push(document.getElementById(recordFields[i]));
+	}
+	var rows = document.querySelectorAll("tr");
+	for (var i=0; i<rows.length; i++) {
+		loadRecord(rows.item(i), fieldEls);
+	}
+
+	var cancelButton = document.querySelector("input.cancel[type=button]");
+	cancelButton.addEventListener("click", function(evt) {
+		clearForm();
+	});
+});
+</script>
+<style type="text/css">
+	input[type=number] {
+		width : 5em;
+	}
+	input#time {
+		width : 10em;
+	}
+</style>
+<form method=POST>
+	<ul>
+		<li><label for="id">id</label><input type="number" name="id" id="id" /></li>
+		<li><label for="time">Time</label><input type="text" name="time" id="time" pattern="[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}(:[0-9]{2})?" /> (YYYY-mm-dd HH:MM)</li>
+		<li><label for="kv">kv</label><input type="number" name="kv" id="kv" /> cc</li>
+		<li><label for="bv">bv</label><input type="number" name="bv" id="bv" /> cc</li>
+		<li><label for="poo">Poo</label><input type="checkbox" name="poo" id="poo" /></li>
+		<li><label for="pee">Pee</label><input type="checkbox" name="pee" id="pee" /></li>
+		<li><label for="temp">Temp</label><input type="number" name="temp" id="temp" step=0.1 /> &deg;C</li>
+		<li><label for="weight">Weight</label><input type="number" name="weight" id="weight" /> grams</li>
+		<li><label for="vitaminD">Vitamin D</label><input type="checkbox" name="vitaminD" id="vitaminD" /></li>
+		<li><label for="vitaminK">Vitamin K</label><input type="checkbox" name="vitaminK" id="vitaminK" /></li>
+		<li><label for="kolikin">Kolikin</label><input type="checkbox" name="kolikin" id="kolikin" /></li>
+		<li><label for="notes">Notes</label><textarea name="notes" id="notes"></textarea></li>
+		<li><input type=submit value="submit" /></li>
+		<li><input type="button" value="cancel" class="cancel" /></li>
+	</ul>
+</form>
