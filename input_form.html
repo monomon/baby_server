@@ -65,6 +65,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	cancelButton.addEventListener("click", function(evt) {
 		clearForm();
 	});
+
+	var deleteButton = document.querySelector("input.delete[type=button]");
+	deleteButton.addEventListener("click", function(evt) {
+		if (window.confirm("Are you sure you want to delete this entry?")) {
+			document.querySelector("input.action[type=hidden]").value = "delete";
+			console.log(document.querySelector("input.action[type=hidden]"));
+			form.submit();
+
+		}
+	});
 });
 </script>
 <style type="text/css">
@@ -89,7 +99,9 @@ document.addEventListener("DOMContentLoaded", function () {
 		<li><label for="vitaminK">Vitamin K</label><input type="checkbox" name="vitaminK" id="vitaminK" /></li>
 		<li><label for="kolikin">Kolikin</label><input type="checkbox" name="kolikin" id="kolikin" /></li>
 		<li><label for="notes">Notes</label><textarea name="notes" id="notes"></textarea></li>
+		<li><input type="hidden" class="action" name="action"></input></li>
 		<li><input type=submit value="submit" /></li>
 		<li><input type="button" value="cancel" class="cancel" /></li>
+		<li><input type="button" value="delete" class="delete" /></li>
 	</ul>
 </form>

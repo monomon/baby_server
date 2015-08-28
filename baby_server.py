@@ -93,11 +93,17 @@ def save_post_data(data):
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
     if "id" in data and data["id"]:
-        ident = data["id"][0]
-        update_data = format_update_data(data, get_columns(cur)[1:])
-        print("updating {}".format(ident))
-        print('update {} set {} where id={}'.format(table_name, update_data, ident))
-        cur.execute('update {} set {} where id={}'.format(table_name, update_data, ident))
+        if "action" in data:
+            if "id" not in data:
+                raise ValueError("no valid id found")
+                return
+            cur.execute("delete from {} where id={}".format(table_name, data["id"][0]))
+        else:
+            ident = data["id"][0]
+            update_data = format_update_data(data, get_columns(cur)[1:])
+            print("updating {}".format(ident))
+            print('update {} set {} where id={}'.format(table_name, update_data, ident))
+            cur.execute('update {} set {} where id={}'.format(table_name, update_data, ident))
     else:
         print("creating")
         keys,values=format_insert_data(data)
