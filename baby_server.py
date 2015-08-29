@@ -97,6 +97,7 @@ def save_post_data(data):
             if "id" not in data:
                 raise ValueError("no valid id found")
                 return
+            print("delete from {} where id={}".format(table_name, data["id"][0]))
             cur.execute("delete from {} where id={}".format(table_name, data["id"][0]))
         else:
             ident = data["id"][0]
@@ -150,6 +151,17 @@ class BabyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     '''
     form = None
     template = None
+    # swiped from https://gist.github.com/HaiyangXu/ec88cbdce3cdbac7b8d5
+    extensions_map = {
+        '.manifest': 'text/cache-manifest',
+        '.html': 'text/html',
+        '.png': 'image/png',
+        '.jpg': 'image/jpg',
+        '.svg': 'image/svg+xml',
+        '.css': 'text/css',
+        '.js':  'application/x-javascript',
+        '': 'application/octet-stream', # Default
+    }
 
     def load_template(self):
         if self.template == None:
@@ -172,10 +184,11 @@ class BabyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif self.path == '/list':
             response = get_list()
             self.send_header("Content-type", "text/html")
-        elif self.path.startswith('/img'):
+        elif self.path.startswith('/static'):
+            # warning: this is unsafe, doing it just because
+            # it is presumed to be running on a local server
             with open(self.path.replace('/','./',1)) as f:
                 response = f.read()
-            self.send_header("Content-type", "image/jpeg")
             self.end_headers()
             # no template for the images
             self.wfile.write(response)

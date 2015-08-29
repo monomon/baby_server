@@ -16,12 +16,14 @@ dates = [int(datetime.datetime.strftime(
     "%s"
 )) for i in rows]
 
+lines = []
+
 # kv
 values = [i[2] if i[2]!="" else None for i in rows]
-plt.plot(dates, values)
+lines.append(plt.plot(dates, values, label="kv"))
 # bv
 values = [i[3] if i[3]!="" else None for i in rows]
-plt.plot(dates, values)
+lines.append(plt.plot(dates, values, label="bv"))
 
 values = []
 for row in rows:
@@ -36,8 +38,8 @@ for row in rows:
         value += int(row[3])
     values.append(value)
 
-plt.plot(dates, values)
+lines.append(plt.plot(dates, values, label="total"))
 plt.axis([min(dates), max(dates), min(values), max(values)])
-print(dates)
+plt.legend(loc="upper left")
 plt.show()
 conn.close()

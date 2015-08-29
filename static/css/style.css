@@ -1,0 +1,49 @@
+body {
+	font-family : "Droid Sans", sans-serif;
+}
+ul {
+	list-style-type : none;
+}
+ul li {
+	margin-bottom : 0.3em;
+}
+label {
+	width : 5em;
+	display : inline-block;
+}
+table {
+	border-collapse:collapse;
+	border-width : 1px 0 1px 1px;
+	border-style : solid;
+	border-color : #999;
+}
+td, th {
+	padding : 0.5em;
+	border-right : 1px solid #999;
+}
+tr {
+	cursor: pointer;
+}
+tr:nth-child(even) {
+	background-color:#ccc;
+}
+tr:nth-child(odd) {
+	background-color:#fff;
+}
+tr:hover {
+	background-color : #888;
+}
+
+form {
+	border : 1px solid #999;
+	border-radius:10px;
+	width : 30em;
+	background-color : #728FCE;
+}
+
+section {
+	position : absolute;
+	right : 10px;
+	top : 10px;
+
+}
