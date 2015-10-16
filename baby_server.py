@@ -3,6 +3,8 @@ import urlparse
 import sqlite3
 import sys
 from datetime import datetime
+from os import listdir
+from random import choice
 
 '''
 This is a simple web interface to a database for recording data of a baby.
@@ -17,6 +19,7 @@ input_date_format = "%Y-%m-%d %H:%M"
 
 table_name = 'bela'
 db_name = 'bebe'
+image_dir = '/static/img/bela/'
 
 columns = [
     'time',
@@ -144,6 +147,13 @@ def get_list():
     conn.close()
     return result
 
+def getrandomimage ():
+	# get list of files in directory
+	# choose random file from list and return it
+	images = listdir(image_dir)
+	return choice(images)
+	
+	
 class BabyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     '''
     basic HTTP handler for get and post requests.
@@ -202,7 +212,9 @@ class BabyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.end_headers()
             return
         self.end_headers()
-        self.wfile.write(self.template.replace("<content>", response))
+		template = self.template.replace("<content>", response)
+		template = template.replace("<image>", getrandomimage())
+        self.wfile.write(template)
 
     def do_POST(self):
         '''
